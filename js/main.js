@@ -3,7 +3,7 @@ var ezMediaUploader = new ezMediaUploader({
   containerID: "thumbnail-uploader",
   allowedFileFormats: ["images"],
   maxTotalFileSize: 4096,
-  oldFiels: [
+  _oldFiels: [
     {
       url:
         "https://images.unsplash.com/photo-1501183007986-d0d080b147f9?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=334&q=80",
