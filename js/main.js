@@ -3,7 +3,7 @@ var ezMediaUploader = new EzMediaUploader({
   containerID: "thumbnail-uploader",
   allowedFileFormats: ["images"],
   maxTotalFileSize: 4096,
-  oldFiels: [
+  _oldFiels: [
     {
       attachmentID: '1',
       url:
