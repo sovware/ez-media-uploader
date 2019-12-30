@@ -38,27 +38,40 @@
           </div>
 
           <div class="form-group">
-            <div id="thumbnail-uploader" class="ez-media-uploader">
-              <div class="ezmu__loading-section">
+            <div id="thumbnail-uploader" class="ez-media-uploader"
+              data-type="images"
+              data-max-file-items="2" 
+              data-max-total-file-size="40"
+              data-allow-multiple="true">
+              <div class="ezmu__loading-section --show">
                 <span class="ezmu__loading-icon">
-                  <img class="ezmu__loading-icon-img" src="./images/spinner-solid.svg">
+                  <img
+                    class="ezmu__loading-icon-img"
+                    src="./images/spinner-solid.svg"
+                  />
                 </span>
               </div>
 
-              <div class="ez-old-files">
+              <div class="ezmu__old-files">
                 <span
+                  class="ezmu__old-files-meta"
+                  data-attachment-id="1"
                   data-url="https://images.unsplash.com/photo-1501183007986-d0d080b147f9?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=334&q=80"
-                  data-size=""
-                  data-type="image"
+                  data-size="200"
+                  data-type="file"
                 ></span>
                 <span
+                  class="ezmu__old-files-meta"
+                  data-attachment-id="2"
                   data-url="https://images.unsplash.com/photo-1575761410364-8a3eb7e4edfc?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=334&q=80"
-                  data-size=""
+                  data-size="200"
                   data-type="image"
                 ></span>
                 <span
+                  class="ezmu__old-files-meta"
+                  data-attachment-id="3"
                   data-url="https://images.unsplash.com/photo-1447752875215-b2761acb3c5d?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjF9&auto=format&fit=crop&w=750&q=80"
-                  data-size=""
+                  data-size="200"
                   data-type="image"
                 ></span>
               </div>
@@ -90,7 +103,7 @@
       integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6"
       crossorigin="anonymous"
     ></script>
-    <script src="https://kit.fontawesome.com/97e0377e15.js"></script>
+    
     <script src="./js/ez-media-uploader.js"></script>
     <script src="./js/main.js"></script>
   </body>
