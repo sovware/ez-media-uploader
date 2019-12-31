@@ -99,14 +99,6 @@
       } else {
         this.options.allowMultiple = true;
       }
- 
-      // featured
-      var featured = container.getAttribute('data-allow-multiple');
-      if ( featured && (featured === 'false' || featured === '0') ) {
-        this.options.featured = false;
-      } else {
-        this.options.featured = true;
-      }
     }
 
     this.getTheFiles = function() {
@@ -128,7 +120,7 @@
     this.getFilesMeta = function() {
       var final_files_meta = [];
       if (!this.filesMeta.length) {
-        return final_files;
+        return final_files_meta;
       }
 
       forEach(this.filesMeta, function(file) {
@@ -238,6 +230,10 @@
           url: file.url,
           oldFile: true
         };
+
+        if ("attachmentID" in file) {
+          filesMeta.attachmentID = file.attachmentID;
+        }
 
         if ("type" in file) {
           filesMeta.type = file.type;
@@ -703,16 +699,16 @@
       "ezmu__media-picker-buttons"
     );
 
-    var titles = document.createElement("p");
+    var titles_area = createElementWithClass('ezmu__titles-area');
     var title_1 = createElementWithClass("ezmu__title-1", "p", "Drag & Drop");
     var title_2 = createElementWithClass("ezmu__title-3", "p", "or");
-    titles.appendChild(title_1);
-    titles.appendChild(title_2);
+    titles_area.appendChild(title_1);
+    titles_area.appendChild(title_2);
 
     var upload_button_wrap = createElementWithClass("ezmu__upload-button-wrap");
     updateFileInputElement(upload_button_wrap, data);
 
-    media_picker_buttons.appendChild(titles);
+    media_picker_buttons.appendChild(titles_area);
     media_picker_buttons.appendChild(upload_button_wrap);
     media_picker_controls.appendChild(media_picker_buttons);
 
@@ -987,7 +983,7 @@
       }
 
       if ( size && size.length ) {
-        meta.size = size;
+        meta.size = parseInt(size);
       }
 
       if ( type && type.length ) {
