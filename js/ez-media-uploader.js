@@ -18,7 +18,17 @@
       maxFileItems: false,
       allowedFileFormats: ["images"],
       allowMultiple: true,
-      featured: true
+      featured: true,
+      dictionary: {
+        featured: 'Featured',
+        dragNDrop: 'Drag & Drop',
+        or: 'or',
+        dropHere: 'Drop Here',
+        selectFiles: 'Select Files',
+        addMore: 'Add More',
+        maxTotalFileSize: 'Max limit for total file size is __DT__',
+        maxFileItems: 'Max limit for total file is __DT__',
+      }
     };
 
     // Data
@@ -54,6 +64,7 @@
       this.container = container;
 
       this.getMarkupOptions();
+      this.getMarkupDictionary();
       this.loadOldFiels();
       this.attachElements();
       this.updatePreview();
@@ -99,7 +110,62 @@
       } else {
         this.options.allowMultiple = true;
       }
-    }
+    };
+
+    this.getMarkupDictionary = function() {
+      var container = this.container;
+
+      var featured = container.querySelectorAll('.ezmu-dictionary-featured');
+      if ( featured && featured.length ) {
+        var featured_dic = featured[0].innerHTML;
+        this.options.dictionary.featured = featured_dic;
+      }
+
+      // featured: 'Featured',
+      // dragNDrop: 'Drag & Drop',
+      // or: 'or',
+      // dropHere: 'Drop Here',
+      // selectFiles: 'Select Files',
+      // addMore: 'Add More',
+      // maxTotalFileSize: 'Max limit for total file size is __DT__',
+      // maxFileItems: 'Max limit for total file is __DT__',
+
+      var drag_n_drop = container.querySelectorAll('.ezmu-dictionary-drag-n-drop');
+      if ( drag_n_drop && drag_n_drop.length ) {
+        var drag_n_drop_dic = drag_n_drop[0].innerHTML;
+        this.options.dictionary.dragNDrop = drag_n_drop_dic;
+      }
+
+      var or = container.querySelectorAll('.ezmu-dictionary-or');
+      if ( or && or.length ) {
+        var or_dic = or[0].innerHTML;
+        this.options.dictionary.or = or_dic;
+      }
+
+      var select_files = container.querySelectorAll('.ezmu-dictionary-select-files');
+      if ( select_files && select_files.length ) {
+        var select_files_dic = select_files[0].innerHTML;
+        this.options.dictionary.selectFiles = select_files_dic;
+      }
+
+      var add_more = container.querySelectorAll('.ezmu-dictionary-add-more');
+      if ( add_more && add_more.length ) {
+        var add_more_dic = add_more[0].innerHTML;
+        this.options.dictionary.addMore = add_more_dic;
+      }
+
+      var max_total_file_size = container.querySelectorAll('.ezmu-dictionary-max-total-file-size');
+      if ( max_total_file_size && max_total_file_size.length ) {
+        var max_total_file_size_dic = max_total_file_size[0].innerHTML;
+        this.options.dictionary.maxTotalFileSize = max_total_file_size_dic;
+      }
+
+      var max_file_items = container.querySelectorAll('.ezmu-dictionary-max-file-items');
+      if ( max_file_items && max_file_items.length ) {
+        var max_file_items_dic = max_file_items[0].innerHTML;
+        this.options.dictionary.maxFileItems = max_file_items_dic;
+      }
+    };
 
     this.getTheFiles = function() {
       var final_files = [];
@@ -167,7 +233,7 @@
       if ( files.length > max_file_items) {
         error_log.push({
           errorKey: "maxFileItems",
-          message: "Max limit for total file is " + max_file_items
+          message: this.options.dictionary.maxFileItems.replace(/(__DT__)/g, max_file_items)
         });
       }
 
@@ -187,7 +253,7 @@
       if (total_file_size_in_byte > max_total_file_size_in_byte) {
         error_log.push({
           errorKey: "maxTotalFileSize",
-          message: "Max limit for total file size is " + max_total_file_size_in_text
+          message: this.options.dictionary.maxTotalFileSize.replace(/(__DT__)/g, max_total_file_size_in_text)
         });
       }
 
@@ -288,10 +354,12 @@
       addClass(container, "ez-media-uploader");
       container.innerHTML = "";
 
-      var drop_zone_section_elm = createDropZoneSection();
+      this.fileInputID = createFileInputID();
+
+      var drop_zone_section_elm = createDropZoneSection(this);
       var loading_section_elm = createLoadingSection();
       var media_picker_elm = createMediaPickerSection(this);
-      var preview_section_elm = createPreviewSection();
+      var preview_section_elm = createPreviewSection(this);
       var status_section_elm = createStatusSection();
 
       container.appendChild(drop_zone_section_elm);
@@ -354,7 +422,7 @@
 
     // attachFileChangeListener
     this.attachFileChangeListener = function() {
-      var file_input = this.container.querySelectorAll("#ezmu__file-input");
+      var file_input = this.container.querySelectorAll("#" + this.fileInputID);
       var fileInputElm = file_input ? file_input[0] : null;
 
       if (fileInputElm) {
@@ -667,10 +735,10 @@
 
   // Helper Functions
   //-------------------------------------------
-  function createDropZoneSection(dara) {
+  function createDropZoneSection(data) {
     var drop_zone_section = document.createElement("div");
     addClass(drop_zone_section, "ezmu__drop-zone-section");
-    drop_zone_section.innerHTML = "<h2>Drop Here</h2>";
+    drop_zone_section.innerHTML = "<h2>"+ data.options.dictionary.dropHere +"</h2>";
 
     return drop_zone_section;
   }
@@ -700,8 +768,8 @@
     );
 
     var titles_area = createElementWithClass('ezmu__titles-area');
-    var title_1 = createElementWithClass("ezmu__title-1", "p", "Drag & Drop");
-    var title_2 = createElementWithClass("ezmu__title-3", "p", "or");
+    var title_1 = createElementWithClass("ezmu__title-1", "p", data.options.dictionary.dragNDrop);
+    var title_2 = createElementWithClass("ezmu__title-3", "p", data.options.dictionary.or);
     titles_area.appendChild(title_1);
     titles_area.appendChild(title_2);
 
@@ -729,7 +797,7 @@
     container.innerHTML = "";
     var file_input = document.createElement("input");
     file_input.setAttribute("type", "file");
-    file_input.setAttribute("id", "ezmu__file-input");
+    file_input.setAttribute("id", data.fileInputID);
     file_input.setAttribute("class", "ezmu__file-input");
     file_input.setAttribute("accept", accept);
 
@@ -738,12 +806,44 @@
     }
 
     var file_input_label = document.createElement("label");
-    file_input_label.setAttribute("for", "ezmu__file-input");
+    file_input_label.setAttribute("for", data.fileInputID);
     file_input_label.setAttribute("class", "ezmu__btn ezmu__input-label");
-    file_input_label.innerHTML = "Select Files";
+    file_input_label.innerHTML = data.options.dictionary.selectFiles;
 
     container.appendChild(file_input);
     container.appendChild(file_input_label);
+  }
+
+  function createFileInputID () {
+    var the_id = 'ezmu__file-input';
+    var file_input = document.querySelectorAll('.ezmu__file-input');
+
+    if ( file_input.length ) {
+      the_id = getNewid(file_input[file_input.length - 1].id);
+    }
+
+    return the_id;
+  }
+
+  function getNewid(old_id) {
+    if (!old_id && typeof old_id !== 'string') {
+      return '';
+    }
+
+    var new_id = old_id;
+    var match_number = old_id.match(/-\d+$/);
+    
+    if (!match_number) {
+        new_id = old_id + '-1';
+    }
+    
+    if (match_number) {
+        var number = match_number[0].replace(/-/g, '');
+        number = parseInt(number) + 1;
+        new_id = old_id.replace(/-\d+$/, '-' + number);
+    }
+    
+    return new_id;
   }
 
   function getFileFormats(allowedFileFormats) {
@@ -764,7 +864,7 @@
     return default_formats;
   }
 
-  function createPreviewSection() {
+  function createPreviewSection(data) {
     var preview_section = createElementWithClass("ezmu__preview-section");
     var thumbnail_area = createElementWithClass("ezmu__thumbnail-area");
     var media_picker_buttons = createElementWithClass(
@@ -775,7 +875,7 @@
     var label = createElementWithClass(
       "ezmu__btn ezmu__input-label",
       "label",
-      "Add More"
+      data.options.dictionary.addMore
     );
     label.setAttribute("for", "ezmu__file-input");
     upload_button_wrap.appendChild(label);
@@ -1135,10 +1235,18 @@
     var property;
     for (property in args) {
       if (defaults.hasOwnProperty(property)) {
-        defaults[property] = args[property];
+        if ( property === 'dictionary' ) {
+          for ( var dictionaryItem in args[property] ) {
+            if (args[property].hasOwnProperty(dictionaryItem)) {
+              defaults[property][dictionaryItem] = args[property][dictionaryItem];
+            }
+          }
+        } else {
+          defaults[property] = args[property];
+        }
+        
       }
     }
-
     return defaults;
   }
 
