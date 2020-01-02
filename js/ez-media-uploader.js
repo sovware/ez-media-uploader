@@ -15,6 +15,7 @@
       oldFielsUrl: null,
       maxFileSize: 2048,
       maxTotalFileSize: 4096,
+      minFileItems: false,
       maxFileItems: false,
       allowedFileFormats: ["images"],
       allowMultiple: true,
@@ -27,6 +28,7 @@
         selectFiles: 'Select Files',
         addMore: 'Add More',
         maxTotalFileSize: 'Max limit for total file size is __DT__',
+        minFileItems: 'Min limit for total file is __DT__',
         maxFileItems: 'Max limit for total file is __DT__',
       }
     };
@@ -36,7 +38,6 @@
     if ( typeof args === 'object' && args !== null ) {
       this.options = extendDefaults(defaults, args);
     }
-    
     this.oldFiles = [];
     this.files = [];
     this.filesMeta = [];
@@ -79,19 +80,25 @@
       // maxFileSize
       var max_file_size = container.getAttribute('data-max-file-size');
       if ( max_file_size && max_file_size.length) {
-        this.options.maxFileSize = max_file_size;
+        this.options.maxFileSize = parseInt(max_file_size);
       }
 
       // maxTotalFileSize
       var max_total_file_size = container.getAttribute('data-max-total-file-size');
       if ( max_total_file_size && max_total_file_size.length) {
-        this.options.maxTotalFileSize = max_total_file_size;
+        this.options.maxTotalFileSize = parseInt(max_total_file_size);
       }
       
+      // minFileItems
+      var min_file_items = container.getAttribute('data-min-file-items');
+      if ( min_file_items && min_file_items.length) {
+        this.options.minFileItems = parseInt(min_file_items);
+      }
+
       // maxFileItems
       var max_file_items = container.getAttribute('data-max-file-items');
       if ( max_file_items && max_file_items.length) {
-        this.options.maxFileItems = max_file_items;
+        this.options.maxFileItems = parseInt(max_file_items);
       }
 
       // allowedFileFormats
@@ -152,6 +159,12 @@
       if ( max_total_file_size && max_total_file_size.length ) {
         var max_total_file_size_dic = max_total_file_size[0].innerHTML;
         this.options.dictionary.maxTotalFileSize = max_total_file_size_dic;
+      }
+
+      var min_file_items = container.querySelectorAll('.ezmu-dictionary-min-file-items');
+      if ( min_file_items && min_file_items.length ) {
+        var min_file_items_dic = min_file_items[0].innerHTML;
+        this.options.dictionary.minFileItems = min_file_items_dic;
       }
 
       var max_file_items = container.querySelectorAll('.ezmu-dictionary-max-file-items');
@@ -223,14 +236,18 @@
       var files = this.filesMeta;
       var error_log = [];
 
-      if (!files.length) {
-        updateValidationFeedback(error_log, this.statusSection);
-        return true;
+      // Validate Min File Items
+      var min_file_items = this.options.minFileItems;
+      if ( min_file_items && (files.length < min_file_items)) {
+        error_log.push({
+          errorKey: "minFileItems",
+          message: this.options.dictionary.minFileItems.replace(/(__DT__)/g, min_file_items)
+        });
       }
 
       // Validate Max File Items
       var max_file_items = this.options.maxFileItems;
-      if ( max_file_items && files.length > max_file_items) {
+      if ( max_file_items && (files.length > max_file_items)) {
         error_log.push({
           errorKey: "maxFileItems",
           message: this.options.dictionary.maxFileItems.replace(/(__DT__)/g, max_file_items)
