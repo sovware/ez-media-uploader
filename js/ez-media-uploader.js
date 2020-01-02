@@ -581,9 +581,13 @@
       }
 
       var base_elm = target;
-      var parent = target.parentElement.parentElement.parentElement.parentElement;
+      var parent_ie = target.parentElement.parentElement.parentElement;
+      var parent = parent_ie.parentElement;
 
       var id = parent.getAttribute("data-id");
+      if ( !id ) {
+        id = parent_ie.getAttribute("data-id");
+      }
       if ( !id ) { return; }
 
       var base_index = findIndexByKey(this.filesMeta, "id", id);
