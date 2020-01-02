@@ -837,7 +837,7 @@
     var file_input = document.querySelectorAll('.ezmu__file-input');
 
     if ( file_input.length ) {
-      the_id = getNewid(file_input[file_input.length - 1].id);
+      the_id = 'ezmu__file-input-' + (file_input.length + 1);
     }
 
     return the_id;
