@@ -407,7 +407,7 @@
       // Attach Drag & Drop Listener
       this.attachDragNDropListener();
 
-      document.addEventListener("click", function(e) {
+      this.container.addEventListener("click", function(e) {
         if (!e.target) {
           return;
         }

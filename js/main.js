@@ -4,6 +4,11 @@ var ezMediaUploader = new EzMediaUploader({
 });
 ezMediaUploader.init();
 
+var ezMediaUploader_2 = new EzMediaUploader({
+  containerID: "thumbnail-uploader-2"
+});
+ezMediaUploader_2.init();
+
 var form = document.getElementById("uploader-form");
 form.addEventListener("submit", function(e) {
   e.preventDefault();
