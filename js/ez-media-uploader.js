@@ -230,7 +230,7 @@
 
       // Validate Max File Items
       var max_file_items = this.options.maxFileItems;
-      if ( files.length > max_file_items) {
+      if ( max_file_items && files.length > max_file_items) {
         error_log.push({
           errorKey: "maxFileItems",
           message: this.options.dictionary.maxFileItems.replace(/(__DT__)/g, max_file_items)
