@@ -72,6 +72,8 @@
     };
 
     this.getMarkupOptions = function() {
+      if (!this.container) { return null; }
+
       var container = this.container;
 
       // maxFileSize
@@ -86,7 +88,6 @@
         this.options.maxTotalFileSize = max_total_file_size;
       }
       
-
       // maxFileItems
       var max_file_items = container.getAttribute('data-max-file-items');
       if ( max_file_items && max_file_items.length) {
@@ -113,6 +114,8 @@
     };
 
     this.getMarkupDictionary = function() {
+      if (!this.container) { return null; }
+
       var container = this.container;
 
       var featured = container.querySelectorAll('.ezmu-dictionary-featured');
@@ -120,15 +123,6 @@
         var featured_dic = featured[0].innerHTML;
         this.options.dictionary.featured = featured_dic;
       }
-
-      // featured: 'Featured',
-      // dragNDrop: 'Drag & Drop',
-      // or: 'or',
-      // dropHere: 'Drop Here',
-      // selectFiles: 'Select Files',
-      // addMore: 'Add More',
-      // maxTotalFileSize: 'Max limit for total file size is __DT__',
-      // maxFileItems: 'Max limit for total file is __DT__',
 
       var drag_n_drop = container.querySelectorAll('.ezmu-dictionary-drag-n-drop');
       if ( drag_n_drop && drag_n_drop.length ) {
@@ -168,6 +162,8 @@
     };
 
     this.getTheFiles = function() {
+      if (!this.container) { return null; }
+
       var final_files = [];
 
       if (!this.filesMeta.length) {
@@ -184,6 +180,8 @@
     };
 
     this.getFilesMeta = function() {
+      if (!this.container) { return null; }
+
       var final_files_meta = [];
       if (!this.filesMeta.length) {
         return final_files_meta;
@@ -220,6 +218,8 @@
     };
 
     this.validateFiles = function() {
+      if (!this.container) { return null; }
+
       var files = this.filesMeta;
       var error_log = [];
 
@@ -275,6 +275,8 @@
     };
 
     this.loadOldFiels = function() {
+      if (!this.container) { return null; }
+
       var old_fiels = [];
       
       if ( this.options.oldFiels ) {
@@ -316,6 +318,8 @@
     };
 
     this.getValidatedPaths = function(paths) {
+      if (!this.container) { return null; }
+
       if (!Array.isArray(paths)) {
         return null;
       }
@@ -347,9 +351,8 @@
 
     // attachElements
     this.attachElements = function() {
-      if (!this.container) {
-        return;
-      }
+      if (!this.container) { return null; }
+
       var container = this.container;
       addClass(container, "ez-media-uploader");
       container.innerHTML = "";
@@ -412,16 +415,20 @@
         if (hasClass(e.target, "ezmu__front-item__close-btn")) {
           self.removeFile(e);
         }
-
+        
         // Sort Button Event
-        if (hasClass(e.target, "ezmu__front-item__sort-button-skin")) {
-          self.changeOrder(e);
+        if (hasClass(e.target, "ezmu__front-item__sort-button")) {
+          self.changeOrder(e.target);
+        } else if (hasClass(e.target, "ezmu__front-item__sort-button-skin")) {
+          self.changeOrder(e.target.parentElement);
         }
       });
     };
 
     // attachFileChangeListener
     this.attachFileChangeListener = function() {
+      if (!this.container) { return null; }
+
       var file_input = this.container.querySelectorAll("#" + this.fileInputID);
       var fileInputElm = file_input ? file_input[0] : null;
 
@@ -438,6 +445,8 @@
 
     // attachDragNDropListener
     this.attachDragNDropListener = function() {
+      if (!this.container) { return null; }
+
       var self = this;
       var drop_area = this.container;
       var drag_events = ["dragenter", "dragleave", "dragover", "drop"];
@@ -510,23 +519,24 @@
 
       switch (layout) {
         case "preview":
-          removeClass(loading_section, "--show");
-          removeClass(media_picker_section, "--show");
-          addClass(preview_section, "--show");
+          removeClass(loading_section, "ezmu--show");
+          removeClass(media_picker_section, "ezmu--show");
+          addClass(preview_section, "ezmu--show");
           break;
         case "loading":
-          removeClass(media_picker_section, "--show");
-          // removeClass(preview_section, "--show");
-          addClass(loading_section, "--show");
+          removeClass(media_picker_section, "ezmu--show");
+          // removeClass(preview_section, "ezmu--show");
+          addClass(loading_section, "ezmu--show");
           break;
         default:
-          removeClass(loading_section, "--show");
-          removeClass(preview_section, "--show");
-          addClass(media_picker_section, "--show");
+          removeClass(loading_section, "ezmu--show");
+          removeClass(preview_section, "ezmu--show");
+          addClass(media_picker_section, "ezmu--show");
       }
     };
 
     this.removeFile = function(e) {
+      if (!this.container) { return null; }
       this.updateLayout("loading");
 
       // 1st Parent: parent_front_item_close_icon
@@ -562,21 +572,22 @@
       this.updatePreview();
     };
 
-    this.changeOrder = function(e) {
+    this.changeOrder = function(target) {
+      if (!this.container) { return null; }
+
       var total_fiels = this.filesMeta.length;
       if (total_fiels < 2) {
         return;
       }
 
-      var base_elm = e.target.parentElement;
-      var parent =
-        e.target.parentElement.parentElement.parentElement.parentElement;
+      var base_elm = target;
+      var parent = target.parentElement.parentElement.parentElement;
 
       var id = parent.getAttribute("data-id");
       var base_index = findIndexByKey(this.filesMeta, "id", id);
 
       var target_index;
-      if (hasClass(base_elm, "--sort-up")) {
+      if (hasClass(base_elm, "ezmu--sort-up")) {
         target_index = base_index + 1;
 
         if (target_index > total_fiels - 1) {
@@ -584,7 +595,7 @@
         }
       }
 
-      if (hasClass(base_elm, "--sort-down")) {
+      if (hasClass(base_elm, "ezmu--sort-down")) {
         target_index = base_index - 1;
 
         if (target_index < 0) {
@@ -602,6 +613,7 @@
 
     // renderFiles
     this.renderFiles = function(files) {
+      if (!this.container) { return null; }
       var self = this;
 
       if (!files.length) {
@@ -745,7 +757,7 @@
 
   function createMediaPickerSection(data) {
     var media_picker_section = createElementWithClass(
-      "ezmu__media-picker-section --show"
+      "ezmu__media-picker-section ezmu--show"
     );
 
     var media_picker_controls = createElementWithClass(
@@ -892,7 +904,7 @@
   }
   function createLoadingSection(show) {
     // loading_section_elm
-    var class_name = show ? "ezmu__loading-section --show" : "ezmu__loading-section";
+    var class_name = show ? "ezmu__loading-section ezmu--show" : "ezmu__loading-section";
 
     var loading_section = createElementWithClass(class_name);
     var loading_icon = createElementWithClass("ezmu__loading-icon", "span");
@@ -994,19 +1006,19 @@
     );
     addClass(
       thumbnail_list_item_sort_buttons_down,
-      "ezmu__front-item__sort-button --sort-down"
+      "ezmu__front-item__sort-button ezmu--sort-down"
     );
     thumbnail_list_item_sort_buttons_down.setAttribute("type", "button");
 
-    thumbnail_list_item_sort_buttons_down.innerHTML = '<span class="ezmu__front-item__sort-button-skin --sort-down"></span>';
+    thumbnail_list_item_sort_buttons_down.innerHTML = '<span class="ezmu__front-item__sort-button-skin ezmu--sort-down"></span>';
 
     var thumbnail_list_item_sort_buttons_up = document.createElement("button");
     addClass(
       thumbnail_list_item_sort_buttons_up,
-      "ezmu__front-item__sort-button --sort-up"
+      "ezmu__front-item__sort-button ezmu--sort-up"
     );
     thumbnail_list_item_sort_buttons_up.setAttribute("type", "button");
-    thumbnail_list_item_sort_buttons_up.innerHTML = '<span class="ezmu__front-item__sort-button-skin --sort-up"></span>';
+    thumbnail_list_item_sort_buttons_up.innerHTML = '<span class="ezmu__front-item__sort-button-skin ezmu--sort-up"></span>';
 
     thumbnail_list_item_sort_buttons.appendChild(
       thumbnail_list_item_sort_buttons_down
@@ -1100,9 +1112,9 @@
     container.innerHTML = '';
     
     if ( !error_log.length ) {
-      removeClass(container, '--show');
+      removeClass(container, 'ezmu--show');
     }
-    addClass(container, '--show');
+    addClass(container, 'ezmu--show');
 
     for ( var i = 0; i < error_log.length; i++ ) {
       var alert_box = createElementWithClass('ezmu_alert ezmu_alert_error');
