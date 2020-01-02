@@ -245,7 +245,7 @@
       var total_file_size_in_byte = 0;
 
       forEach(files, function(file) {
-        if ('fileSize' in file) {
+        if ( (typeof file === 'object' && file !== null) && 'fileSize' in file) {
           total_file_size_in_byte += file.fileSize;
         }
       });
@@ -581,9 +581,11 @@
       }
 
       var base_elm = target;
-      var parent = target.parentElement.parentElement.parentElement;
+      var parent = target.parentElement.parentElement.parentElement.parentElement;
 
       var id = parent.getAttribute("data-id");
+      if ( !id ) { return; }
+
       var base_index = findIndexByKey(this.filesMeta, "id", id);
 
       var target_index;
