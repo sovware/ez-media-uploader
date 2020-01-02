@@ -895,7 +895,7 @@
       "label",
       data.options.dictionary.addMore
     );
-    label.setAttribute("for", "ezmu__file-input");
+    label.setAttribute("for", data.fileInputID);
     upload_button_wrap.appendChild(label);
     media_picker_buttons.appendChild(upload_button_wrap);
 

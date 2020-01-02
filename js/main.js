@@ -5,7 +5,8 @@ var ezMediaUploader = new EzMediaUploader({
 ezMediaUploader.init();
 
 var ezMediaUploader_2 = new EzMediaUploader({
-  containerID: "thumbnail-uploader-2"
+  containerID: "thumbnail-uploader-2",
+  maxFileItems: 2
 });
 ezMediaUploader_2.init();
 
