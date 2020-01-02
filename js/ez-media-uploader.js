@@ -843,27 +843,6 @@
     return the_id;
   }
 
-  function getNewid(old_id) {
-    if (!old_id && typeof old_id !== 'string') {
-      return '';
-    }
-
-    var new_id = old_id;
-    var match_number = old_id.match(/-\d+$/);
-    
-    if (!match_number) {
-        new_id = old_id + '-1';
-    }
-    
-    if (match_number) {
-        var number = match_number[0].replace(/-/g, '');
-        number = parseInt(number) + 1;
-        new_id = old_id.replace(/-\d+$/, '-' + number);
-    }
-    
-    return new_id;
-  }
-
   function getFileFormats(allowedFileFormats) {
     var default_formats = "image/*";
 
