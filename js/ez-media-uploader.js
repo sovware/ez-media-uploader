@@ -222,6 +222,15 @@
         active = (active) ? active : null;
         this.options.infoMessageSettings.infoMaxFileItems = ( active === '0' ) ? false : true;
       }
+
+      var info_file_type = container.querySelectorAll('.ezmu-dictionary-info-type');
+      if ( info_file_type && info_file_type.length ) {
+        var info_file_type_dic = info_file_type[0].innerHTML.trim();
+        this.options.dictionary.infoAllowedFileFormats = info_file_type_dic;
+        var active = info_file_type[0].getAttribute('data-show');
+        active = (active) ? active : null;
+        this.options.infoMessageSettings.infoAllowedFileFormats = ( active === '0' ) ? false : true;
+      }
     };
 
     this.getTheFiles = function() {
@@ -988,7 +997,7 @@
     var item_count = 0;
 
     for ( var settings in info_settings ) {
-      if (settings) {
+      if (info_settings[settings]) {
         var dictionary_data = getDictionaryData(settings, data);
         var text = info_dictionary[settings].replace(/(__DT__)/g, dictionary_data);
         var li = createElementWithClass(
