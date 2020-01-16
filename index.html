@@ -42,16 +42,16 @@
               data-type="images"
               data-min-file-items="2"
               data-max-file-items="5"
-              data-max-total-file-size="40"
+              data-max-total-file-size="4096"
               data-allow-multiple="true">
-              <div class="ezmu__loading-section --show">
+              <div class="ezmu__loading-section ezmu--show">
                 <span class="ezmu__loading-icon">
                   <span class="ezmu__loading-icon-img-bg"></span>
                 </span>
               </div>
 
               <div class="ezmu__old-files">
-                <span
+               <!--  <span
                   class="ezmu__old-files-meta"
                   data-attachment-id="1"
                   data-url="https://images.unsplash.com/photo-1501183007986-d0d080b147f9?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=334&q=80"
@@ -71,23 +71,37 @@
                   data-url="https://images.unsplash.com/photo-1447752875215-b2761acb3c5d?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjF9&auto=format&fit=crop&w=750&q=80"
                   data-size="200"
                   data-type="image"
-                ></span>
+                ></span> -->
               </div>
 
               <div class="ezmu-dictionary">
+                <!-- Labels -->
                 <span class="ezmu-dictionary-featured">Featured</span>
                 <span class="ezmu-dictionary-drag-n-drop">Drag & Drop</span>
                 <span class="ezmu-dictionary-or">or</span>
                 <span class="ezmu-dictionary-select-files">Select Files</span>
                 <span class="ezmu-dictionary-add-more">Add More</span>
+
+                <!-- Validation Texts -->
                 <span class="ezmu-dictionary-max-total-file-size">
                   Max limit for total file size is __DT__
                 </span>
-                <span class="ezmu-dictionary-max-file-items">
+                <span class="ezmu-dictionary-min-file-items">
                   Min limit for total file is __DT__
                 </span>
                 <span class="ezmu-dictionary-max-file-items">
                   Max limit for total file is __DT__
+                </span>
+                  
+                <!-- Info Text -->
+                <span class="ezmu-dictionary-info-max-total-file-size" data-show='1'>
+                  Maximum allowed file size is __DT__
+                </span>
+                <span class="ezmu-dictionary-info-min-file-items" data-show='1'>
+                  Minimum __DT__ file is required
+                </span>
+                <span class="ezmu-dictionary-info-max-file-items" data-show='1'>
+                  Maximum __DT__ file is allowed
                 </span>
               </div>
             </div>
