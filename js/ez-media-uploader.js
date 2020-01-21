@@ -42,12 +42,16 @@
         info: {
           maxTotalFileSize: { 
             text: 'Maximum allowed file size is __DT__', 
-            show: true, 
-            class: 'ezmu-dictionary-info-max-total-file-size'
-          },
-          minFileItems: { text: 'Minimum __DT__ file is required', show: true },
-          maxFileItems: { text: 'Maximum __DT__ file is allowed', show: true },
-          allowedFileFormats: { text: 'Allowed file types are __DT__', show: true },
+            show: true, featured: false },
+          minFileItems: { 
+            text: 'Minimum __DT__ files are required', 
+            show: true, featured: false },
+          maxFileItems: { 
+            text: 'Maximum __DT__ files are allowed', 
+            show: true, featured: false },
+          allowedFileFormats: { 
+            text: 'Allowed file types are __DT__', 
+            show: true, featured: false },
         }
       },
 
@@ -202,8 +206,10 @@
           var elm_dic = elm[0].innerHTML.trim();
           self.options.dictionary.info[item.key].text = elm_dic;
 
-          var active = elm[0].getAttribute('data-show');
-          self.options.dictionary.info[item.key].show = ( active === '0' || active === 'false' ) ? false : true;
+          var show = elm[0].getAttribute('data-show');
+          var featured = elm[0].getAttribute('data-featured');
+          self.options.dictionary.info[item.key].show = ( show === '0' || show === 'false' ) ? false : true;
+          self.options.dictionary.info[item.key].featured = ( featured === '1' || featured === 'true' ) ? true : false;
         }
       });
     };
@@ -272,7 +278,6 @@
       var self = this;
       var files = this.filesMeta;
       var alerts = this.options.dictionary.alert;
-      var info = this.options.dictionary.info;
       var error_log = [];
 
       // Validate Min File Items
@@ -326,8 +331,6 @@
       if (!this.isClean && this.options.showAlerts) {
         updateValidationFeedback(error_log, this.statusSection);
       }
-
-      
 
       var info_elm = self.container.querySelectorAll('.ezmu__info-list-item');
       if ( info_elm && info_elm.length ) {
@@ -452,15 +455,11 @@
       var media_picker_elm = createMediaPickerSection(this);
       var preview_section_elm = createPreviewSection(this);
       
-      
-
       container.appendChild(drop_zone_section_elm);
       container.appendChild(loading_section_elm);
       container.appendChild(media_picker_elm);
       container.appendChild(preview_section_elm);
       
-      
-
       var upload_button_container = container.querySelectorAll(
         ".ezmu__upload-button-wrap"
       );
@@ -1004,9 +1003,9 @@
       if (info_dictionary[info].show) {
         var dictionary_data = getDictionaryData(info, data);
         var text = info_dictionary[info].text.replace(/(__DT__)/g, dictionary_data);
-        var li = createElementWithClass(
-          "ezmu__info-list-item " + info, 'li', text
-        );
+        var class_name = "ezmu__info-list-item " + info;
+        class_name = (info_dictionary[info].featured) ? class_name + ' is-featured' : class_name;
+        var li = createElementWithClass( class_name, 'li', text );
         info_list.appendChild(li);
         item_count++;
       }
