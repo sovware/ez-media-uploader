@@ -83,6 +83,7 @@
     // -----------------------------------------
     // init
     this.init = function() {
+      console.log('123');
       var id = this.options.containerID;
       var container = document.getElementById(id);
       if (!container) {
@@ -1244,7 +1245,7 @@
     return files_meta;
   }
 
-  function updateValidationFeedback( error_log, container, show_all = false ) {
+  function updateValidationFeedback( error_log, container ) {
     container.innerHTML = '';
     if ( !error_log.length ) {
       removeClass(container, 'ezmu--show');
@@ -1252,18 +1253,15 @@
     }
     addClass(container, 'ezmu--show');
 
-    if ( !show_all ) {
-      var alert_box = createElementWithClass('ezmu_alert ezmu_alert_error');
-      alert_box.innerHTML = error_log[0].message;
-      container.appendChild(alert_box);
-      return;
-    }
+    var alert_box = createElementWithClass('ezmu_alert ezmu_alert_error');
+    alert_box.innerHTML = error_log[0].message;
+    container.appendChild(alert_box);
 
-    for ( var i = 0; i < error_log.length; i++ ) {
-      var alert_box = createElementWithClass('ezmu_alert ezmu_alert_error');
-      alert_box.innerHTML = error_log[i].message;
-      container.appendChild(alert_box);
-    }
+    // for ( var i = 0; i < error_log.length; i++ ) {
+    //   var alert_box = createElementWithClass('ezmu_alert ezmu_alert_error');
+    //   alert_box.innerHTML = error_log[i].message;
+    //   container.appendChild(alert_box);
+    // }
   }
 
   function createElementWithClass(class_name, elm, child) {
@@ -1383,7 +1381,7 @@
       data = (data_is_valid) ? chk : data;
     }
 
-    if ( Number.isInteger(data) ) {
+    if ( typeof data === 'number' ) {
       data = ( data < 1 ) ? false : data;
       data_is_valid = ( data ) ? true : false;
     }
