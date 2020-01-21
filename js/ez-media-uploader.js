@@ -20,33 +20,36 @@
       allowedFileFormats: ["images"],
       allowMultiple: true,
       featured: true,
+      showAlerts: true,
+      showInfo: true,
       dictionary: {
-        // Labels
-        featured: 'Featured',
-        dragNDrop: 'Drag & Drop',
-        or: 'or',
-        dropHere: 'Drop Here',
-        selectFiles: 'Select Files',
-        addMore: 'Add More',
-
-        // Validation Messages
-        maxTotalFileSize: 'Maximum limit for total file size is __DT__',
-        minFileItems: 'Minimum limit for total file is __DT__',
-        maxFileItems: 'Maximum limit for total file is __DT__',
-        
-        // Info Messages
-        infoMaxTotalFileSize: 'Maximum allowed file size is __DT__',
-        infoMinFileItems: 'Minimum __DT__ file is required',
-        infoMaxFileItems: 'Maximum __DT__ file is allowed',
-        infoAllowedFileFormats: 'Allowed file types are __DT__',
+        // Label Texts
+        label: {
+          featured: 'Featured',
+          dragNDrop: 'Drag & Drop',
+          or: 'or',
+          dropHere: 'Drop Here',
+          selectFiles: 'Select Files',
+          addMore: 'Add More',
+        },
+        // Alerts Texts
+        alert: {
+          maxTotalFileSize: 'Maximum limit for total file size is __DT__',
+          minFileItems: 'Minimum limit for total file is __DT__',
+          maxFileItems: 'Maximum limit for total file is __DT__',
+        },
+        // Info Texts
+        info: {
+          maxTotalFileSize: { 
+            text: 'Maximum allowed file size is __DT__', 
+            show: true, 
+            class: 'ezmu-dictionary-info-max-total-file-size'
+          },
+          minFileItems: { text: 'Minimum __DT__ file is required', show: true },
+          maxFileItems: { text: 'Maximum __DT__ file is allowed', show: true },
+          allowedFileFormats: { text: 'Allowed file types are __DT__', show: true },
+        }
       },
-      
-      infoMessageSettings: {
-        infoMaxTotalFileSize: true,
-        infoMinFileItems: true,
-        infoMaxFileItems: true,
-        infoAllowedFileFormats: true,
-      }
 
     };
 
@@ -132,105 +135,77 @@
 
       // allowMultiple
       var allow_multiple = container.getAttribute('data-allow-multiple');
-      if ( allow_multiple && (allow_multiple === 'false' || allow_multiple === '0') ) {
-        this.options.allowMultiple = false;
-      } else {
-        this.options.allowMultiple = true;
+      if ( allow_multiple && allow_multiple.length) {
+        this.options.allow_multiple = ( allow_multiple === 'false' || allow_multiple === '0' ) ? false : true;
+      }
+
+      // showAlerts
+      var showAlerts = container.getAttribute('data-show-alerts');
+      if ( showAlerts && showAlerts.length) {
+        this.options.showAlerts = ( showAlerts === 'false' || showAlerts === '0' ) ? false : true;
+      }
+
+      // showInfo
+      var showInfo = container.getAttribute('data-show-info');
+      if ( showInfo && showInfo.length) {
+        this.options.showInfo = ( showInfo === 'false' || showInfo === '0' ) ? false : true;
       }
     };
 
     this.getMarkupDictionary = function() {
       if (!this.container) { return null; }
       var container = this.container;
+      var self = this;
 
-      // Labels
-      var featured = container.querySelectorAll('.ezmu-dictionary-featured');
-      if ( featured && featured.length ) {
-        var featured_dic = featured[0].innerHTML.trim();
-        this.options.dictionary.featured = featured_dic;
-      }
+      var label_classes = [
+        { key: 'featured',    class: 'ezmu-dictionary-label-featured' },
+        { key: 'dragNDrop',   class: 'ezmu-dictionary-label-drag-n-drop' },
+        { key: 'or',          class: 'ezmu-dictionary-label-or' },
+        { key: 'dropHere',    class: 'ezmu-dictionary-label-drop-here' },
+        { key: 'selectFiles', class: 'ezmu-dictionary-label-select-files' },
+        { key: 'addMore',     class: 'ezmu-dictionary-label-add-more' },
+      ];
+      var alert_classes = [
+        { key: 'maxTotalFileSize', class: 'ezmu-dictionary-alert-max-total-file-size' },
+        { key: 'minFileItems',     class: 'ezmu-dictionary-alert-min-file-items' },
+        { key: 'maxFileItems',     class: 'ezmu-dictionary-alert-max-file-items' },
+      ];
+      var info_classes = [
+        { key: 'maxTotalFileSize',   class: 'ezmu-dictionary-info-max-total-file-size' },
+        { key: 'minFileItems',       class: 'ezmu-dictionary-info-min-file-items' },
+        { key: 'maxFileItems',       class: 'ezmu-dictionary-info-max-file-items' },
+        { key: 'allowedFileFormats', class: 'ezmu-dictionary-info-type' },
+      ];
 
-      var drag_n_drop = container.querySelectorAll('.ezmu-dictionary-drag-n-drop');
-      if ( drag_n_drop && drag_n_drop.length ) {
-        var drag_n_drop_dic = drag_n_drop[0].innerHTML.trim();
-        this.options.dictionary.dragNDrop = drag_n_drop_dic;
-      }
+      // Fetch Labels
+      forEach(label_classes, function(item) {
+        var elm = container.querySelectorAll('.' + item.class);
+        if ( elm && elm.length ) {
+          var elm_dic = elm[0].innerHTML.trim();
+          self.options.dictionary.label[item.key] = elm_dic;
+        }
+      });
 
-      var or = container.querySelectorAll('.ezmu-dictionary-or');
-      if ( or && or.length ) {
-        var or_dic = or[0].innerHTML.trim();
-        this.options.dictionary.or = or_dic;
-      }
+      // Fetch Alerts
+      forEach(alert_classes, function(item) {
+        var elm = container.querySelectorAll('.' + item.class);
+        if ( elm && elm.length ) {
+          var elm_dic = elm[0].innerHTML.trim();
+          self.options.dictionary.alert[item.key] = elm_dic;
+        }
+      });
 
-      var select_files = container.querySelectorAll('.ezmu-dictionary-select-files');
-      if ( select_files && select_files.length ) {
-        var select_files_dic = select_files[0].innerHTML.trim();
-        this.options.dictionary.selectFiles = select_files_dic;
-      }
+      // Fetch Info
+      forEach(info_classes, function(item) {
+        var elm = container.querySelectorAll('.' + item.class);
+        if ( elm && elm.length ) {
+          var elm_dic = elm[0].innerHTML.trim();
+          self.options.dictionary.info[item.key].text = elm_dic;
 
-      var add_more = container.querySelectorAll('.ezmu-dictionary-add-more');
-      if ( add_more && add_more.length ) {
-        var add_more_dic = add_more[0].innerHTML.trim();
-        this.options.dictionary.addMore = add_more_dic;
-      }
-
-      // Validation Text
-      var max_total_file_size = container.querySelectorAll('.ezmu-dictionary-max-total-file-size');
-      if ( max_total_file_size && max_total_file_size.length ) {
-        var max_total_file_size_dic = max_total_file_size[0].innerHTML.trim();
-        this.options.dictionary.maxTotalFileSize = max_total_file_size_dic;
-      }
-
-      var min_file_items = container.querySelectorAll('.ezmu-dictionary-min-file-items');
-      if ( min_file_items && min_file_items.length ) {
-        var min_file_items_dic = min_file_items[0].innerHTML.trim();
-        this.options.dictionary.minFileItems = min_file_items_dic;
-      }
-
-      var max_file_items = container.querySelectorAll('.ezmu-dictionary-max-file-items');
-      if ( max_file_items && max_file_items.length ) {
-        var max_file_items_dic = max_file_items[0].innerHTML.trim();
-        this.options.dictionary.maxFileItems = max_file_items_dic;
-      }
-
-      // Info Text
-      var info_max_total_file_size = container.querySelectorAll('.ezmu-dictionary-info-max-total-file-size');
-      if ( info_max_total_file_size && info_max_total_file_size.length ) {
-        var info_max_total_file_size_dic = info_max_total_file_size[0].innerHTML.trim();
-
-        this.options.dictionary.infoMaxFileItems = info_max_total_file_size_dic;
-        var active = info_max_total_file_size[0].getAttribute('data-show');
-        
-        active = (active) ? active : null;
-        this.options.infoMessageSettings.infoMaxTotalFileSize = ( active === '0' ) ? false : true;
-      }
-
-      var info_min_total_file_size = container.querySelectorAll('.ezmu-dictionary-info-min-file-items');
-      if ( info_min_total_file_size && info_min_total_file_size.length ) {
-        var info_min_total_file_size_dic = info_min_total_file_size[0].innerHTML.trim();
-        this.options.dictionary.infoMinFileItems = info_min_total_file_size_dic;
-        var active = info_min_total_file_size[0].getAttribute('data-show');
-        active = (active) ? active : null;
-        this.options.infoMessageSettings.infoMinFileItems = ( active === '0' ) ? false : true;
-      }
-
-      var info_max_file_items = container.querySelectorAll('.ezmu-dictionary-info-max-file-items');
-      if ( info_max_file_items && info_max_file_items.length ) {
-        var info_max_file_items_dic = info_max_file_items[0].innerHTML.trim();
-        this.options.dictionary.infoMaxFileItems = info_max_file_items_dic;
-        var active = info_max_file_items[0].getAttribute('data-show');
-        active = (active) ? active : null;
-        this.options.infoMessageSettings.infoMaxFileItems = ( active === '0' ) ? false : true;
-      }
-
-      var info_file_type = container.querySelectorAll('.ezmu-dictionary-info-type');
-      if ( info_file_type && info_file_type.length ) {
-        var info_file_type_dic = info_file_type[0].innerHTML.trim();
-        this.options.dictionary.infoAllowedFileFormats = info_file_type_dic;
-        var active = info_file_type[0].getAttribute('data-show');
-        active = (active) ? active : null;
-        this.options.infoMessageSettings.infoAllowedFileFormats = ( active === '0' ) ? false : true;
-      }
+          var active = elm[0].getAttribute('data-show');
+          self.options.dictionary.info[item.key].show = ( active === '0' || active === 'false' ) ? false : true;
+        }
+      });
     };
 
     this.getTheFiles = function() {
@@ -294,7 +269,10 @@
     this.validateFiles = function() {
       if (!this.container) { return null; }
 
+      var self = this;
       var files = this.filesMeta;
+      var alerts = this.options.dictionary.alert;
+      var info = this.options.dictionary.info;
       var error_log = [];
 
       // Validate Min File Items
@@ -305,7 +283,7 @@
       if ( valid_min_file_items && (files.length < min_file_items)) {
         error_log.push({
           errorKey: "minFileItems",
-          message: this.options.dictionary.minFileItems.replace(/(__DT__)/g, min_file_items)
+          message: alerts.minFileItems.replace(/(__DT__)/g, min_file_items)
         });
       }
 
@@ -317,7 +295,7 @@
       if ( valid_max_file_items && (files.length > max_file_items)) {
         error_log.push({
           errorKey: "maxFileItems",
-          message: this.options.dictionary.maxFileItems.replace(/(__DT__)/g, max_file_items)
+          message: alerts.maxFileItems.replace(/(__DT__)/g, max_file_items)
         });
       }
 
@@ -340,15 +318,32 @@
         if (total_file_size_in_byte > max_total_file_size_in_byte) {
           error_log.push({
             errorKey: "maxTotalFileSize",
-            message: this.options.dictionary.maxTotalFileSize.replace(/(__DT__)/g, max_total_file_size_in_text)
+            message: alerts.maxTotalFileSize.replace(/(__DT__)/g, max_total_file_size_in_text)
           });
         }
       }
-      
-      if (!this.isClean) {
+
+      if (!this.isClean && this.options.showAlerts) {
         updateValidationFeedback(error_log, this.statusSection);
       }
-      // updateValidationFeedback(error_log, this.statusSection);
+
+      
+
+      var info_elm = self.container.querySelectorAll('.ezmu__info-list-item');
+      if ( info_elm && info_elm.length ) {
+        forEach(info_elm, function(info_elm){
+          removeClass(info_elm, 'has-error');
+        });
+      }
+
+      if (!this.isClean && this.options.showInfo && error_log.length) {
+        forEach(error_log, function(item) {
+          var info_elm = self.container.querySelectorAll('.ezmu__info-list-item.' + item.errorKey);
+          if ( info_elm && info_elm.length ) {
+            addClass(info_elm[0], 'has-error');
+          }
+        });
+      }
 
       if (error_log.length) {
         return error_log;
@@ -456,15 +451,15 @@
       var loading_section_elm = createLoadingSection();
       var media_picker_elm = createMediaPickerSection(this);
       var preview_section_elm = createPreviewSection(this);
-      var status_section_elm = createStatusSection();
-      var info_section_elm = createInfoSection(this.options);
+      
+      
 
       container.appendChild(drop_zone_section_elm);
       container.appendChild(loading_section_elm);
       container.appendChild(media_picker_elm);
       container.appendChild(preview_section_elm);
-      container.appendChild(status_section_elm);
-      container.appendChild(info_section_elm);
+      
+      
 
       var upload_button_container = container.querySelectorAll(
         ".ezmu__upload-button-wrap"
@@ -477,17 +472,28 @@
       );
 
       var thumbnail_area = container.querySelectorAll(".ezmu__thumbnail-area");
-      var status_section = container.querySelectorAll(".ezmu__status-section");
       var loading_section = container.querySelectorAll(".ezmu__loading-section");
-      var info_section = container.querySelectorAll(".ezmu__loading-section");
-
+      
       this.uploadButtonContainer = upload_button_container ? upload_button_container[0] : null;
       this.mediaPickerSection = media_picker_section ? media_picker_section[0] : null;
       this.previewSection = preview_section ? preview_section[0] : null;
       this.thumbnailArea = thumbnail_area ? thumbnail_area[0] : null;
-      this.statusSection = status_section ? status_section[0] : null;
-      this.infoSection = info_section ? info_section[0] : null;
       this.loadingSection = loading_section ? loading_section[0] : null;
+
+      if ( this.options.showAlerts ) {
+        var status_section_elm = createStatusSection();
+        container.appendChild(status_section_elm);
+        var status_section = container.querySelectorAll(".ezmu__status-section");
+        this.statusSection = status_section ? status_section[0] : null;
+      }
+
+      if ( this.options.showInfo ) {
+        var info_section_elm = createInfoSection(this.options);
+        container.appendChild(info_section_elm);
+
+        var info_section = container.querySelectorAll(".ezmu__info-section");
+        this.infoSection = info_section ? info_section[0] : null;
+      }
     };
 
     // attachEventListener
@@ -834,7 +840,6 @@
         "mediaPickerSection",
         "previewSection",
         "thumbnailArea",
-        "statusSection",
         "loadingSection"
       ];
 
@@ -855,7 +860,7 @@
   function createDropZoneSection(data) {
     var drop_zone_section = document.createElement("div");
     addClass(drop_zone_section, "ezmu__drop-zone-section");
-    drop_zone_section.innerHTML = "<h2>"+ data.options.dictionary.dropHere +"</h2>";
+    drop_zone_section.innerHTML = "<h2>"+ data.options.dictionary.label.dropHere +"</h2>";
 
     return drop_zone_section;
   }
@@ -885,8 +890,8 @@
     );
 
     var titles_area = createElementWithClass('ezmu__titles-area');
-    var title_1 = createElementWithClass("ezmu__title-1", "p", data.options.dictionary.dragNDrop);
-    var title_2 = createElementWithClass("ezmu__title-3", "p", data.options.dictionary.or);
+    var title_1 = createElementWithClass("ezmu__title-1", "p", data.options.dictionary.label.dragNDrop);
+    var title_2 = createElementWithClass("ezmu__title-3", "p", data.options.dictionary.label.or);
     titles_area.appendChild(title_1);
     titles_area.appendChild(title_2);
 
@@ -925,7 +930,7 @@
     var file_input_label = document.createElement("label");
     file_input_label.setAttribute("for", data.fileInputID);
     file_input_label.setAttribute("class", "ezmu__btn ezmu__input-label");
-    file_input_label.innerHTML = data.options.dictionary.selectFiles;
+    file_input_label.innerHTML = data.options.dictionary.label.selectFiles;
 
     container.appendChild(file_input);
     container.appendChild(file_input_label);
@@ -971,7 +976,7 @@
     var label = createElementWithClass(
       "ezmu__btn ezmu__input-label",
       "label",
-      data.options.dictionary.addMore
+      data.options.dictionary.label.addMore
     );
     label.setAttribute("for", data.fileInputID);
     upload_button_wrap.appendChild(label);
@@ -990,18 +995,17 @@
 
   function createInfoSection( data ) {
     var info_section = createElementWithClass("ezmu__info-section");
-    var info_dictionary = data.dictionary;
-    var info_settings = data.infoMessageSettings;
+    var info_dictionary = data.dictionary.info;
 
     var info_list = createElementWithClass("ezmu__info-list", 'ul');
     var item_count = 0;
 
-    for ( var settings in info_settings ) {
-      if (info_settings[settings]) {
-        var dictionary_data = getDictionaryData(settings, data);
-        var text = info_dictionary[settings].replace(/(__DT__)/g, dictionary_data);
+    for ( var info in info_dictionary ) {
+      if (info_dictionary[info].show) {
+        var dictionary_data = getDictionaryData(info, data);
+        var text = info_dictionary[info].text.replace(/(__DT__)/g, dictionary_data);
         var li = createElementWithClass(
-          "ezmu__info-list-item", 'li', text
+          "ezmu__info-list-item " + info, 'li', text
         );
         info_list.appendChild(li);
         item_count++;
@@ -1016,13 +1020,11 @@
   }
 
   function getDictionaryData( item, options ) {
-    var option_name = item.replace(/^(info)/, '');
-    option_name = option_name.charAt(0).toLowerCase() + option_name.slice(1);
-
+    var option_name = item;
     var data = options[option_name];
 
     if ( option_name === 'maxTotalFileSize' && data  ) {
-      return formatedFileSize(data);
+      return formatedFileSize(data * 1024);
     }
 
     if ( option_name === 'allowedFileFormats' && Array.isArray(data) && data.length) {
@@ -1243,13 +1245,20 @@
     return files_meta;
   }
 
-  function updateValidationFeedback( error_log, container ) {
+  function updateValidationFeedback( error_log, container, show_all = false ) {
     container.innerHTML = '';
-    
     if ( !error_log.length ) {
       removeClass(container, 'ezmu--show');
+      return;
     }
     addClass(container, 'ezmu--show');
+
+    if ( !show_all ) {
+      var alert_box = createElementWithClass('ezmu_alert ezmu_alert_error');
+      alert_box.innerHTML = error_log[0].message;
+      container.appendChild(alert_box);
+      return;
+    }
 
     for ( var i = 0; i < error_log.length; i++ ) {
       var alert_box = createElementWithClass('ezmu_alert ezmu_alert_error');
@@ -1402,11 +1411,11 @@
     for (property in args) {
       if (defaults.hasOwnProperty(property)) {
         if ( property === 'dictionary' ) {
-          for ( var dictionaryItem in args[property] ) {
-            if (args[property].hasOwnProperty(dictionaryItem)) {
-              defaults[property][dictionaryItem] = args[property][dictionaryItem];
-            }
-          }
+          // for ( var dictionaryItem in args[property] ) {
+          //   if (args[property].hasOwnProperty(dictionaryItem)) {
+          //     defaults[property][dictionaryItem] = args[property][dictionaryItem];
+          //   }
+          // }
         } else {
           defaults[property] = args[property];
         }
@@ -1416,18 +1425,11 @@
     return defaults;
   }
 
-  // forEach
-  function forEach(array, cb) {
-    for (var i = 0; i < array.length; i++) {
-      cb(array[i], i);
-    }
-  }
+  
 
   // addClass
   function addClass(element, class_name) {
-    if (!element) {
-      return;
-    }
+    if ( !(typeof element === 'object' && 'className' in element) ) { return; }
 
     var arr = element.className.split(" ");
     if (arr.indexOf(class_name) == -1) {
@@ -1455,5 +1457,12 @@
     var match = element.className.match(regExp);
 
     return match;
+  }
+
+  // forEach
+  function forEach(array, cb) {
+    for (var i = 0; i < array.length; i++) {
+      cb(array[i], i);
+    }
   }
 })();

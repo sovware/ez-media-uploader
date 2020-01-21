@@ -463,6 +463,10 @@
   font-size: 14px;
 }
 
+.ezmu__info-list-item.has-error {
+  color: #f25454;
+}
+
 .ezmu__info-list-item::before {
   content: ' ';
   display: inline-block;
@@ -474,9 +478,14 @@
   background-position: center;
   background-size: 8px 8px;
   background-image: url('../images/info-solid.svg');
-  vertical-align: top;
   background-color:#c4c4c4;
+  vertical-align: top;
   border-radius: 50%;
+}
+
+.ezmu__info-list-item.has-error::before {
+  background-image: url('../images/info-solid-light.svg');
+  background-color: #f25454;
 }
 
 .ezmu_alert {
