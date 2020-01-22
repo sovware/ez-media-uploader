@@ -4,16 +4,6 @@ var ezMediaUploader = new EzMediaUploader({
 });
 ezMediaUploader.init();
 
-var ezMediaUploader_2 = new EzMediaUploader({
-  containerID: "thumbnail-uploader-2",
-  maxFileItems: 2
-});
-ezMediaUploader_2.init();
-
-var ezMediaUploader_3 = new EzMediaUploader({
-  containerID: "thumbnail-uploader-3"
-});
-ezMediaUploader_3.init();
 
 var form = document.getElementById("uploader-form");
 form.addEventListener("submit", function(e) {

@@ -461,6 +461,8 @@
   margin-right: 20px;
   color:gray;
   font-size: 14px;
+  -webkit-transition: all ease-in-out 300ms;
+  -o-transition: all ease-in-out 300ms;
   transition: all ease-in-out 300ms;
 }
 
@@ -480,6 +482,8 @@
   background-color:#c4c4c4;
   vertical-align: top;
   border-radius: 50%;
+  -webkit-transition: all ease-in-out 300ms;
+  -o-transition: all ease-in-out 300ms;
   transition: all ease-in-out 300ms;
 }
 
