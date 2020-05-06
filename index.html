@@ -42,26 +42,27 @@
               data-type="images"
               data-min-file-items="0"
               data-max-file-items="1"
+              data-max-file-size="10"
               data-max-total-file-size="0"
-              data-allow-multiple="0"
-              data-show-alerts="false"
-              data-show-file-size="false"
+              data-allow-multiple="1"
+              data-show-alerts="1"
+              data-show-file-size="1"
               data-featured="false"
-              data-allow-sorting="false"
-              data-show-info="false"
-              data-uploader-type="avater">
+              data-allow-sorting="1"
+              data-show-info="1"
+              data-uploader-type="file">
               <div class="ezmu__loading-section ezmu--show">
                 <span class="ezmu__loading-icon">
                   <span class="ezmu__loading-icon-img-bg"></span>
                 </span>
               </div>
 
-              <!-- <div class="ezmu__old-files">
+              <div class="ezmu__old-files">
                 <span
                   class="ezmu__old-files-meta"
                   data-attachment-id="1"
                   data-url="https://images.unsplash.com/photo-1501183007986-d0d080b147f9?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=334&q=80"
-                  data-size="200"
+                  data-size="5"
                   data-type="image"
                 ></span>
                 <span
@@ -78,7 +79,7 @@
                   data-size="200"
                   data-type="image"
                 ></span>
-              </div> -->
+              </div>
 
               <div class="ezmu-dictionary">
                 <!-- Label Texts -->
@@ -91,22 +92,28 @@
                 <span class="ezmu-dictionary-label-change">Change</span>
 
                 <!-- Alert Texts -->
+                <span class="ezmu-dictionary-alert-max-file-size">
+                  The maximum limit for a file is __DT__
+                </span>
                 <span class="ezmu-dictionary-alert-max-total-file-size">
-                  Max limit for total file size is __DT__
+                  The maximum limit for total file size is __DT__
                 </span>
                 <span class="ezmu-dictionary-alert-min-file-items">
-                  Min limit for total file is __DT__
+                  The minimum limit for total file is __DT__
                 </span>
                 <span class="ezmu-dictionary-alert-max-file-items">
-                  Max limit for total file is __DT__
+                  The maximum limit for total file is __DT__
                 </span>
                   
                 <!-- Info Text -->
+                <span class="ezmu-dictionary-info-max-file-size" data-show='1'>
+                  The maximum allowed file size is __DT__
+                </span>
                 <span class="ezmu-dictionary-info-max-total-file-size" data-show='1'>
-                  Maximum allowed file size is __DT__
+                  The maximum total allowed file size is __DT__
                 </span>
                 <span class="ezmu-dictionary-info-min-file-items" data-show='1'>
-                  Minimum __DT__ files are required
+                  The minimum __DT__ files are required
                 </span>
                 <span class="ezmu-dictionary-info-max-file-items" data-show='1' data-featured="1" data-pin="1">
                   Unlimited files are allowed
